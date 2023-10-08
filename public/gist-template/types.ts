@@ -5,16 +5,11 @@ export interface Experiment {
   variants: ExperimentVariant[];
 }
 
-export type ExperimentVariant =
-  | {
-      id: "control";
-      slicePercentage: number;
-    }
-  | {
-      id: string;
-      slicePercentage: number;
-      elements: VariantElement[];
-    };
+export interface ExperimentVariant {
+  id: string;
+  slicePercentage: number;
+  elements?: VariantElement[];
+}
 
 export interface VariantElement {
   selector: string;
