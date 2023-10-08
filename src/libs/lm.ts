@@ -4,8 +4,8 @@ export type LmContent =
   | undefined
   | Array<HTMLElement | string | undefined>;
 export type LM = HTMLElement & {
-  addContent: (c: LmContent) => LM;
-  replaceContent: (c: LmContent) => LM;
+  addContent: (c?: LmContent) => LM;
+  replaceContent: (c?: LmContent) => LM;
 };
 
 export function lm(
