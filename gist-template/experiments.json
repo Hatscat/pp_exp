@@ -1,0 +1,22 @@
+{
+  "experiments": [
+    {
+      "id": "example",
+      "url": "https://github.com/",
+      "name": "example test",
+      "variants": [
+        { "id": "control", "slicePercentage": 50 },
+        {
+          "id": "1",
+          "slicePercentage": 50,
+          "elements": [
+            {
+              "selector": "#dashboard > div > feed-container > div.d-flex.flex-justify-between.flex-items-center > h3",
+              "value": "Hello World"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
