@@ -41,6 +41,11 @@ export function goTo(page: PageName, ...resourceIds: string[]) {
 
 export function setupRouter() {
   window.addEventListener("popstate", router);
+
+  if (!state.githubToken || !state.gistId) {
+    goTo(PageName.Settings);
+    return;
+  }
   router();
 }
 

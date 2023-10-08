@@ -9,4 +9,7 @@ export const enum PageName {
 export const state = {
   page: PageName.ExperimentList,
   experimentId: null as string | null,
+  githubToken: null as string | null,
+  gistId: null as string | null,
+  experimentList: [],
 };
