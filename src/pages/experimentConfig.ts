@@ -1,7 +1,8 @@
 import { lm } from "../libs/lm";
+import { state } from "../state";
 
 export function experimentConfigPage() {
   return lm("div", { className: "flex flex-col" })(
-    lm("h1", { className: "text-2xl" })("Experiment Config")
+    lm("h2", { className: "text-xl" })(state.experimentId ?? "New Experiment")
   );
 }

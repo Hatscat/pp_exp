@@ -1,10 +1,12 @@
-export enum Page {
-  ExperimentList = "/",
-  Settings = "/settings",
-  ExperimentConfig = "/experiment-config",
-  ExperimentBuilder = "/experiment-builder",
+export const enum PageName {
+  ExperimentList = "ExperimentList",
+  Settings = "Settings",
+  ExperimentConfig = "ExperimentConfig",
+  ExperimentBuilder = "ExperimentBuilder",
+  NotFound = "NotFound",
 }
 
 export const state = {
-  page: Page.ExperimentList,
+  page: PageName.ExperimentList,
+  experimentId: null as string | null,
 };

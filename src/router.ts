@@ -3,22 +3,57 @@ import { experimentBuilderPage } from "./pages/experimentBuilder";
 import { experimentConfigPage } from "./pages/experimentConfig";
 import { experimentListPage } from "./pages/experimentList";
 import { settingsPage } from "./pages/settings";
-import { Page, state } from "./state";
+import { state, PageName } from "./state";
 
-export function goto(page: Page) {
-  location.pathname = page;
+export const pagePath: Record<PageName, { route: string; pattern: RegExp }> = {
+  [PageName.ExperimentList]: {
+    route: "/",
+    pattern: /^\/$/,
+  },
+  [PageName.Settings]: {
+    route: "/settings",
+    pattern: /^\/settings\/?$/,
+  },
+  [PageName.ExperimentConfig]: {
+    route: "/experiment-config",
+    pattern: /^\/experiment-config\/(?<experimentId>\w+)\/?$/,
+  },
+  [PageName.ExperimentBuilder]: {
+    route: "/experiment-builder",
+    pattern: /^\/experiment-builder\/(?<experimentId>\w+)\/?$/,
+  },
+  [PageName.NotFound]: {
+    route: "/404",
+    pattern: /^\/404\/?$/,
+  },
+};
+
+export function goTo(page: PageName, ...resourceIds: string[]) {
+  history.pushState(
+    {},
+    "",
+    `${pagePath[page].route}${resourceIds.length ? "/" : ""}${resourceIds.join(
+      "/"
+    )}`
+  );
+  router();
+}
+
+export function setupRouter() {
+  window.addEventListener("popstate", router);
   router();
 }
 
 export function router() {
-  const newPage = Object.values(Page).find(
-    (page) => page === location.pathname
+  const newPage = Object.entries(pagePath).find(([_, { pattern }]) =>
+    pattern.test(location.pathname)
   );
   if (newPage) {
-    state.page = newPage;
+    state.page = newPage[0] as PageName;
+    state.experimentId =
+      newPage[1].pattern.exec(location.pathname)?.groups?.experimentId ?? null;
   } else {
-    location.pathname = Page.ExperimentList;
-    state.page = Page.ExperimentList;
+    state.page = PageName.NotFound;
   }
 
   renderPage();
@@ -26,13 +61,21 @@ export function router() {
 
 function renderPage() {
   switch (state.page) {
-    case Page.ExperimentList:
+    case PageName.ExperimentList:
+      elements.headerTitle.textContent = "Experiments";
       return elements.pageContainer.replaceContent(experimentListPage());
-    case Page.Settings:
+    case PageName.Settings:
+      elements.headerTitle.textContent = "Settings";
       return elements.pageContainer.replaceContent(settingsPage());
-    case Page.ExperimentConfig:
+    case PageName.ExperimentConfig:
+      elements.headerTitle.textContent = "Experiment Config";
       return elements.pageContainer.replaceContent(experimentConfigPage());
-    case Page.ExperimentBuilder:
+    case PageName.ExperimentBuilder:
+      elements.headerTitle.textContent = "Experiment Builder";
       return elements.pageContainer.replaceContent(experimentBuilderPage());
+    case PageName.NotFound:
+    default:
+      elements.headerTitle.textContent = "404";
+      return elements.pageContainer.replaceContent("Not Found");
   }
 }
