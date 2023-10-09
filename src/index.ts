@@ -1,6 +1,7 @@
 import { header } from "./components/header";
 import { config } from "./config";
 import { elements } from "./elements";
+import { fetchAndSyncRemoteGist } from "./gistSync";
 import { lm } from "./libs/lm";
 import { setupRouter } from "./router";
 import { state } from "./state";
@@ -12,6 +13,9 @@ import { state } from "./state";
 
   setupRouter();
 
+  void fetchAndSyncRemoteGist();
+
+  // TODO: fetch local gist template files then save to state
   fetch("/gist-template/package.json")
     .then((res) => {
       console.log({ res });

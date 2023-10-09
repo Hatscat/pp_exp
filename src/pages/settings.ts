@@ -1,4 +1,4 @@
-import { config } from "../config";
+import { fetchAndSyncRemoteGist } from "../gistSync";
 import { lm } from "../libs/lm";
 import { state } from "../state";
 
@@ -31,19 +31,17 @@ export function settingsPage() {
   ]);
 }
 
-function handleInputChange(name: "githubToken" | "gistId", event: Event) {
+async function handleInputChange(name: "githubToken" | "gistId", event: Event) {
   const target = event.target as HTMLInputElement;
   state[name] = target.value;
 
-  if (state.githubToken && state.gistId) {
-    localStorage.setItem(
-      config.localStorageKey,
-      JSON.stringify({
-        githubToken: state.githubToken,
-        gistId: state.gistId,
-      })
-    );
+  if (!state.githubToken || !state.gistId) {
+    return;
+  }
 
-    // TODO: fetch and display a feedback alert
+  const successFulSync = await fetchAndSyncRemoteGist();
+
+  if (successFulSync) {
+    alert("Successfully synced with remote gist!");
   }
 }
