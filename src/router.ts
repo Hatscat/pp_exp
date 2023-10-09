@@ -16,7 +16,7 @@ export const pagePath: Record<PageName, { route: string; pattern: RegExp }> = {
   },
   [PageName.ExperimentConfig]: {
     route: "/experiment-config",
-    pattern: /^\/experiment-config\/(?<experimentId>\w+)\/?$/,
+    pattern: /^\/experiment-config\/?(?<experimentId>\w+)?\/?$/,
   },
   [PageName.ExperimentBuilder]: {
     route: "/experiment-builder",
