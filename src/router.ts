@@ -73,7 +73,9 @@ export function renderPage() {
       elements.headerTitle.textContent = "Settings";
       return elements.pageContainer.replaceContent(settingsPage());
     case PageName.ExperimentConfig:
-      elements.headerTitle.textContent = "Experiment Config";
+      elements.headerTitle.textContent = state.experimentId
+        ? "Experiment Edition"
+        : "New Experiment";
       return elements.pageContainer.replaceContent(experimentConfigPage());
     case PageName.ExperimentBuilder:
       elements.headerTitle.textContent = "Experiment Builder";

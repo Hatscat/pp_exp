@@ -22,6 +22,7 @@ export function settingsPage() {
       ),
       lm("input", {
         id: "github_token",
+        className: "input",
         onchange: (ev) => handleInputChange("githubToken", ev),
       })(state.githubToken ?? "")
     ),
@@ -29,6 +30,7 @@ export function settingsPage() {
       lm("label", { htmlFor: "gist_id", className: "font-bold" })("Gist ID"),
       lm("input", {
         id: "gist_id",
+        className: "input",
         onchange: (ev) => handleInputChange("gistId", ev),
       })(state.gistId ?? "")
     )
