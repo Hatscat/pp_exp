@@ -4,9 +4,9 @@ import { state } from "../state";
 
 export function settingsPage() {
   return lm("div", {
-    className: "flex flex-col container my-8 p-16 space-y-12 bg-stone-100",
-  })([
-    lm("p", { className: "text-lg text-center" })([
+    className: "flex flex-col container p-16 space-y-8 bg-stone-100",
+  })(
+    lm("p", { className: "text-center" })(
       lm("span")(
         "Please enter a GitHub Personal Access Token and a Gist ID to manage the gist through the "
       ),
@@ -14,21 +14,25 @@ export function settingsPage() {
         href: "https://docs.github.com/en/rest/gists/gists",
         className: "text-blue-600 visited:text-purple-600",
       })("GitHub REST API"),
-      lm("span")("."),
-    ]),
-    lm("div", { className: "flex flex-col" })([
-      lm("label", { htmlFor: "github_token" })("GitHub Personal Access Token"),
-      lm("input", { onchange: (ev) => handleInputChange("githubToken", ev) })(
-        state.githubToken ?? ""
+      lm("span")(".")
+    ),
+    lm("div", { className: "flex flex-col" })(
+      lm("label", { htmlFor: "github_token", className: "font-bold" })(
+        "GitHub Personal Access Token"
       ),
-    ]),
-    lm("div", { className: "flex flex-col" })([
-      lm("label", { htmlFor: "gist_id" })("Gist ID"),
-      lm("input", { onchange: (ev) => handleInputChange("gistId", ev) })(
-        state.gistId ?? ""
-      ),
-    ]),
-  ]);
+      lm("input", {
+        id: "github_token",
+        onchange: (ev) => handleInputChange("githubToken", ev),
+      })(state.githubToken ?? "")
+    ),
+    lm("div", { className: "flex flex-col" })(
+      lm("label", { htmlFor: "gist_id", className: "font-bold" })("Gist ID"),
+      lm("input", {
+        id: "gist_id",
+        onchange: (ev) => handleInputChange("gistId", ev),
+      })(state.gistId ?? "")
+    )
+  );
 }
 
 async function handleInputChange(name: "githubToken" | "gistId", event: Event) {

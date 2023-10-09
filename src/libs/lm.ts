@@ -11,15 +11,15 @@ export type LM = HTMLElement & {
 export function lm(
   type: keyof HTMLElementTagNameMap,
   attributes?: Partial<HTMLElement> & Record<string, unknown>
-): (content?: LmContent) => LM {
-  return (content) => {
+): (...content: Array<HTMLElement | string | undefined>) => LM {
+  return (...content) => {
     const element = Object.assign(document.createElement(type), {
       ...attributes,
       addContent: (c?: LmContent) => {
         if (c) {
-          if (typeof c === "object" && "appendChild" in c)
+          if (Array.isArray(c)) c.forEach(element.addContent);
+          else if (typeof c === "object" && "appendChild" in c)
             element.appendChild(c);
-          else if (Array.isArray(c)) c.forEach(element.addContent);
           else if (element instanceof HTMLInputElement) element.value += c;
           else element.innerText += c;
         }

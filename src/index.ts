@@ -19,10 +19,10 @@ import { state } from "./state";
 })();
 
 function pageLayout() {
-  return lm("div", { className: "flex flex-col items-center w-full" })([
+  return lm("div", { className: "flex flex-col items-center w-full" })(
     header(),
-    elements.pageContainer,
-  ]);
+    elements.pageContainer
+  );
 }
 
 function loadLocalStorage() {
