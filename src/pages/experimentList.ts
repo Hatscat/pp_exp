@@ -16,7 +16,7 @@ export function experimentListPage() {
 function experimentCard(experiment: Experiment) {
   return lm("div", {
     className:
-      "flex flex-col p-8 space-y-2 bg-stone-300 border rounded cursor-pointer hover:bg-stone-200",
+      "flex flex-col px-16 py-8 space-y-4 bg-stone-300 border-8 rounded-lg shadow cursor-pointer hover:bg-stone-200",
     onclick: () => goTo(PageName.ExperimentConfig, experiment.id),
   })(
     lm("h2", { className: "text-xl font-medium" })(experiment.name),

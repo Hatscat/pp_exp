@@ -4,7 +4,7 @@ import { state } from "../state";
 
 export function settingsPage() {
   return lm("div", {
-    className: "flex flex-col container p-16 space-y-8 bg-stone-100",
+    className: "flex flex-col container px-16 py-8 space-y-8 bg-stone-100",
   })(
     lm("p", { className: "text-center" })(
       lm("span")(
