@@ -1,3 +1,5 @@
+import { Experiment } from "./models/Experiment";
+
 export const enum PageName {
   ExperimentList = "ExperimentList",
   Settings = "Settings",
@@ -11,5 +13,6 @@ export const state = {
   experimentId: null as string | null,
   githubToken: null as string | null,
   gistId: null as string | null,
-  experimentList: [],
+  experimentList: [] as Experiment[],
+  gistFiles: {} as { [fileName: string]: string },
 };
