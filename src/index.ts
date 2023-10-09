@@ -3,7 +3,7 @@ import { config } from "./config";
 import { elements } from "./elements";
 import { fetchAndSyncRemoteGist } from "./gistSync";
 import { lm } from "./libs/lm";
-import { setupRouter } from "./router";
+import { renderPage, setupRouter } from "./router";
 import { state } from "./state";
 
 (function main() {
@@ -13,7 +13,7 @@ import { state } from "./state";
 
   setupRouter();
 
-  void fetchAndSyncRemoteGist();
+  void fetchAndSyncRemoteGist().then(() => renderPage());
 
   void loadGistTemplateFiles();
 })();

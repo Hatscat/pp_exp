@@ -64,7 +64,7 @@ export function router() {
   renderPage();
 }
 
-function renderPage() {
+export function renderPage() {
   switch (state.page) {
     case PageName.ExperimentList:
       elements.headerTitle.textContent = "Experiments";
