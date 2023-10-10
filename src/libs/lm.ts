@@ -3,15 +3,17 @@ export type LmContent =
   | string
   | undefined
   | Array<HTMLElement | string | undefined>;
-export type LM = HTMLElement & {
-  addContent: (c?: LmContent) => LM;
-  replaceContent: (c?: LmContent) => LM;
-};
 
-export function lm(
-  type: keyof HTMLElementTagNameMap,
+export type LM<T extends keyof HTMLElementTagNameMap> =
+  HTMLElementTagNameMap[T] & {
+    addContent: (c?: LmContent) => LM<T>;
+    replaceContent: (c?: LmContent) => LM<T>;
+  };
+
+export function lm<T extends keyof HTMLElementTagNameMap>(
+  type: T,
   attributes?: Partial<HTMLElement> & Record<string, unknown>
-): (...content: Array<HTMLElement | string | undefined>) => LM {
+): (...content: Array<HTMLElement | string | undefined>) => LM<T> {
   return (...content) => {
     const element = Object.assign(document.createElement(type), {
       ...attributes,

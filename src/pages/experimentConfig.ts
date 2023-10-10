@@ -34,16 +34,16 @@ export function experimentConfigPage() {
       ),
       inputs.id
     ),
-    lm("button", {
-      className: "btn-success",
-      // onclick: () => saveExperiment(), // TODO: get input values, check values, send them to gist api, update state
-    })("Save"),
     state.experimentId
       ? lm("button", {
           className: "btn-primary",
           onclick: () => goTo(PageName.ExperimentBuilder, experiment?.id ?? ""),
         })("Edit Variants")
       : undefined,
+    lm("button", {
+      className: "btn-success",
+      // onclick: () => saveExperiment(), // TODO: get input values, check values, send them to gist api, update state
+    })("Save"),
     lm("button", {
       className: "btn-danger",
       // onclick: () =>

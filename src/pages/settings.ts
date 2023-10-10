@@ -3,6 +3,17 @@ import { lm } from "../libs/lm";
 import { state } from "../state";
 
 export function settingsPage() {
+  const inputs = {
+    githubToken: lm("input", {
+      id: "github_token",
+      className: "input",
+    })(state.githubToken ?? ""),
+    gistId: lm("input", {
+      id: "gist_id",
+      className: "input",
+    })(state.gistId ?? ""),
+  };
+
   return lm("div", {
     className: "flex flex-col container px-16 py-8 space-y-8 bg-stone-100",
   })(
@@ -20,28 +31,28 @@ export function settingsPage() {
       lm("label", { htmlFor: "github_token", className: "font-bold" })(
         "GitHub Personal Access Token"
       ),
-      lm("input", {
-        id: "github_token",
-        className: "input",
-        onchange: (ev) => handleInputChange("githubToken", ev),
-      })(state.githubToken ?? "")
+      inputs.githubToken
     ),
     lm("div", { className: "flex flex-col" })(
       lm("label", { htmlFor: "gist_id", className: "font-bold" })("Gist ID"),
-      lm("input", {
-        id: "gist_id",
-        className: "input",
-        onchange: (ev) => handleInputChange("gistId", ev),
-      })(state.gistId ?? "")
-    )
+      inputs.gistId
+    ),
+    lm("button", {
+      className: "btn-success",
+      onclick: () => syncWithGithub(inputs),
+    })("Save and Sync")
   );
 }
 
-async function handleInputChange(name: "githubToken" | "gistId", event: Event) {
-  const target = event.target as HTMLInputElement;
-  state[name] = target.value;
+async function syncWithGithub(inputs: {
+  githubToken: HTMLInputElement;
+  gistId: HTMLInputElement;
+}) {
+  state.githubToken = inputs.githubToken.value;
+  state.gistId = inputs.gistId.value;
 
   if (!state.githubToken || !state.gistId) {
+    alert("Please fill all the fields!");
     return;
   }
 
