@@ -41,13 +41,13 @@ function loadLocalStorage() {
 async function loadGistTemplateFiles() {
   try {
     const packageFileRes = await fetch("/gist-template/package.json");
-    state.gistFiles["package.json"] = await packageFileRes.text();
+    state.gistFiles["package.json"] = { content: await packageFileRes.text() };
 
     const typesFileRes = await fetch("/gist-template/types.ts");
-    state.gistFiles["types.ts"] = await typesFileRes.text();
+    state.gistFiles["types.ts"] = { content: await typesFileRes.text() };
 
     const scriptFileRes = await fetch("/gist-template/pp_exp.ts");
-    state.gistFiles["pp_exp.ts"] = await scriptFileRes.text();
+    state.gistFiles["pp_exp.ts"] = { content: await scriptFileRes.text() };
 
     console.log({ gistFiles: state.gistFiles });
   } catch (err) {

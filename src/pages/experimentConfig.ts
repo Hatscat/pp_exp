@@ -1,4 +1,9 @@
+import {
+  deleteAndSyncRemoteExperiment,
+  saveAndSyncRemoteExperiment,
+} from "../gistSync";
 import { lm } from "../libs/lm";
+import { Experiment } from "../models/Experiment";
 import { goTo } from "../router";
 import { PageName, state } from "../state";
 
@@ -37,22 +42,69 @@ export function experimentConfigPage() {
     state.experimentId
       ? lm("button", {
           className: "btn-primary",
-          onclick: () => goTo(PageName.ExperimentBuilder, experiment?.id ?? ""),
+          onclick: () =>
+            goTo(PageName.ExperimentBuilder, state.experimentId ?? ""),
         })("Edit Variants")
       : undefined,
     lm("button", {
       className: "btn-success",
-      // onclick: () => saveExperiment(), // TODO: get input values, check values, send them to gist api, update state
+      onclick: () => saveExperiment(experiment, inputs),
     })("Save"),
     lm("button", {
       className: "btn-danger",
-      // onclick: () =>
-      //   confirm("Are you sure to delete this experiment?") &&
-      //   deleteExperiment(), // TODO: delete experiment from gist api, update state
+      onclick: () =>
+        confirm("Are you sure to delete this experiment?") &&
+        deleteExperiment(),
     })("Delete"),
     lm("button", {
       className: "btn-secondary",
       onclick: () => goTo(PageName.ExperimentList),
     })("Back")
   );
+}
+async function saveExperiment(
+  currentExperiment: Experiment | undefined,
+  inputs: {
+    name: HTMLInputElement;
+    url: HTMLInputElement;
+    id: HTMLInputElement;
+  }
+) {
+  if (!inputs.name.value || !inputs.url.value || !inputs.id.value) {
+    alert("Please fill all the fields!");
+    return;
+  }
+
+  const newExperiment: Experiment = currentExperiment
+    ? {
+        ...currentExperiment,
+        name: inputs.name.value,
+        url: inputs.url.value,
+        id: inputs.id.value,
+      }
+    : {
+        name: inputs.name.value,
+        url: inputs.url.value,
+        id: inputs.id.value,
+        variants: [],
+      };
+
+  const isSuccessFul = await saveAndSyncRemoteExperiment(
+    currentExperiment?.id,
+    newExperiment
+  );
+
+  alert(isSuccessFul ? "Experiment saved!" : "Failed to save experiment!");
+}
+
+async function deleteExperiment() {
+  if (!state.experimentId) return;
+
+  const isSuccessFul = await deleteAndSyncRemoteExperiment(state.experimentId);
+
+  if (isSuccessFul) {
+    goTo(PageName.ExperimentList);
+  } else {
+    alert("Failed to delete experiment!");
+  }
 }

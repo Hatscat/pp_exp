@@ -1,3 +1,4 @@
+import { config } from "../config";
 import { fetchAndSyncRemoteGist } from "../gistSync";
 import { lm } from "../libs/lm";
 import { state } from "../state";
@@ -56,9 +57,17 @@ async function syncWithGithub(inputs: {
     return;
   }
 
-  const successFulSync = await fetchAndSyncRemoteGist();
+  const isSuccessFulSync = await fetchAndSyncRemoteGist();
 
-  if (successFulSync) {
+  if (isSuccessFulSync) {
+    localStorage.setItem(
+      config.localStorageKey,
+      JSON.stringify({
+        githubToken: state.githubToken,
+        gistId: state.gistId,
+      })
+    );
+
     alert("Successfully synced with remote gist!");
   }
 }

@@ -14,5 +14,5 @@ export const state = {
   githubToken: null as string | null,
   gistId: null as string | null,
   experimentList: [] as Experiment[],
-  gistFiles: {} as { [fileName: string]: string },
+  gistFiles: {} as { [fileName: string]: { content: string } },
 };
