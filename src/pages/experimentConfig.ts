@@ -23,7 +23,7 @@ export function experimentConfigPage() {
   };
 
   return lm("div", {
-    className: "flex flex-col px-16 py-8 space-y-8 bg-stone-100",
+    className: "flex flex-col px-16 py-8 space-y-8 bg-stone-100 min-w-[512px]",
   })(
     lm("div", { className: "flex flex-col" })(
       lm("label", { htmlFor: "exp_name", className: "font-bold" })("Name"),

@@ -1,6 +1,7 @@
 import { Octokit } from "octokit";
 import { state } from "./state";
 import { Experiment } from "./models/Experiment";
+import { OctokitResponse } from "@octokit/types";
 
 export async function fetchAndSyncRemoteGist(): Promise<boolean> {
   if (!state.githubToken || !state.gistId) {
@@ -22,18 +23,7 @@ export async function fetchAndSyncRemoteGist(): Promise<boolean> {
     return false;
   }
 
-  if (response.data.files?.["experiments.json"]?.content) {
-    try {
-      const content = JSON.parse(
-        response.data.files["experiments.json"].content
-      );
-      state.experimentList = content.experiments;
-
-      console.log({ experimentList: state.experimentList });
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  updateStateWithApiResponse(response);
 
   return true;
 }
@@ -90,8 +80,12 @@ async function updateAndSyncRemoteGist(
     return false;
   }
 
-  console.log({ responseData: response.data.files });
+  updateStateWithApiResponse(response);
 
+  return true;
+}
+
+function updateStateWithApiResponse(response: OctokitResponse<any>) {
   if (response.data.files?.["experiments.json"]?.content) {
     try {
       const content = JSON.parse(
@@ -104,6 +98,4 @@ async function updateAndSyncRemoteGist(
       console.error(err);
     }
   }
-
-  return true;
 }
